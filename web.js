@@ -1,9 +1,12 @@
-var express = require("express"),                                                                
-    app = express();                                                                             
-
-// tell express to use the bodyParser middleware                                                 
-// and set upload directory                                                                      
+var express = require("express");
+var app = express();
 app.use(express.bodyParser({ keepExtensions: true, uploadDir: "uploads" }));                                                                        
+app.use(express.logger());
+
+app.get('/', function(request, response) {
+  response.send('Hello World!');
+});
+
 app.post("/upload", function (request, response) {                                               
     // request.files will contain the uploaded file(s),                                          
     // keyed by the input name (in this case, "file")                                            
@@ -15,6 +18,9 @@ app.post("/upload", function (request, response) {
     console.log("file path", request.files.photo.path);                                           
 
     response.end("upload complete");                                                             
-});                                                                                              
+});                        
 
-app.listen(3000)
+var port = process.env.PORT || 5000;
+app.listen(port, function() {
+  console.log("Listening on " + port);
+});
